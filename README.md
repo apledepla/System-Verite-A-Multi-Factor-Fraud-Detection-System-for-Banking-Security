@@ -58,10 +58,10 @@ To run the app, there are two ways (`app.py`, `sig.py`):
   
 ## Credits & Acknowledgement
 
-### GitHub - serengil/deepface: A Lightweight Face Recognition and Facial Attribute Analysis (Age, Gender, Emotion and Race) Library for Python https://share.google/GjJ5lG8UYYnHNmY0h
+# GitHub - serengil/deepface: A Lightweight Face Recognition and Facial Attribute Analysis (Age, Gender, Emotion and Race) Library for Python https://share.google/GjJ5lG8UYYnHNmY0h
 
-### Opencv Python program for Face Detection - GeeksforGeeks https://share.google/gfFOHgwz0uMtULPCu
+# Opencv Python program for Face Detection - GeeksforGeeks https://share.google/gfFOHgwz0uMtULPCu
 
-### Research inspiration for the Siamese Model:
+# Research inspiration for the Siamese Model:
 	SigNet: Convolutional Siamese Network for Writer Independent Offline Signature Verification - https://arxiv.org/pdf/1707.02131
 	Siamese signature verification with confidence - https://www.kaggle.com/code/medali1992/siamese-signature-verification-with-confidence#Contrastive-loss
