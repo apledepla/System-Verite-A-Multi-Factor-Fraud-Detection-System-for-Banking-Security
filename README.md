@@ -54,8 +54,32 @@ To run the app, there are two ways (`app.py`, `sig.py`):
   ```bash
   python sig.py
   python app.py
-    
-  
+
+## Folder Structure
+```bash
+System_Verite/
+├── .deepface/
+├── Html/
+│   ├── Face_cam.html
+│   ├── General_info.html
+│   ├── Sig_upload.html
+│   └── Sign.html
+├── Static/
+│   ├── Css/
+│   │   └── style-wr.css
+│   ├── Picture/
+│   │   ├── Bpi_logo.png
+│   │   └── bpi_logo_2.png
+│   ├── Cropped_pic.jpg
+│   ├── Entire_pic.jpg
+│   ├── Instance_face_photo.jpg
+│   └── reference.jpg
+├── app.py
+├── sig.py
+├── Haarscascade_frontalface_default.xml
+├── Signet_sia_model.keras
+└── yolov8s.pt
+```
 ## Credits & Acknowledgement
 
 GitHub - serengil/deepface: A Lightweight Face Recognition and Facial Attribute Analysis (Age, Gender, Emotion and Race) Library for Python https://share.google/GjJ5lG8UYYnHNmY0h
@@ -63,5 +87,6 @@ GitHub - serengil/deepface: A Lightweight Face Recognition and Facial Attribute 
 Opencv Python program for Face Detection - GeeksforGeeks https://share.google/gfFOHgwz0uMtULPCu
 
 Research inspiration for the Siamese Model:
+
 	SigNet: Convolutional Siamese Network for Writer Independent Offline Signature Verification - https://arxiv.org/pdf/1707.02131
 	Siamese signature verification with confidence - https://www.kaggle.com/code/medali1992/siamese-signature-verification-with-confidence#Contrastive-loss
