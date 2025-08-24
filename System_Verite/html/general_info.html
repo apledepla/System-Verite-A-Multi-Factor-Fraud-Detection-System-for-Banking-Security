@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>BPI | Security Verification</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style-wr.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='picture/bpi_logo.png') }}">
+
+</head>
+
+<body>
+
+    <!-- Whole Container -->
+    <div class="container">
+
+        <!-- Side bar Content (Red BG) -->
+        <div class="progressbar"><div class="progress"></div></div>
+        <form method="POST" action="/restart">
+            <button id="reloadBtn" title="Start Over" style="position: absolute; top: 15px; right: 20px; background: none; border: none; cursor: pointer; font-size: 28px; transition: color 0.3s ease;">
+                ↻
+            </button>
+        </form>
+        
+        <div class="sidebar">
+            <img src="{{ url_for('static', filename='picture/bpi_logo_2.png') }}" alt="BPI Logo">
+            <h2>Security Measures</h2>
+            <ul class="steps">
+                <li data-step="1">OTP Verification</li>
+                <li data-step="2">Upload Signature</li>
+                <li data-step="3">Face Detection</li>
+                <li data-step="4">Final Verify</li>
+            </ul>
+        </div>
+        
+        <!-- Whole Form Content (White BG)-->
+        <div class="form-content">
+
+            <!-- Intro -->
+            <div class="intro-screen" id="intro">
+                <h1>Bank Security Verification</h1>
+                <button class="btn" id="startBtn">Start</button>
+            </div>
+
+            <!-- OTP Verification-->
+            <div class="form-step">
+                <h3>OTP Verification</h3>
+                <p>Please provide your email and phone number for sending of OTP</p>
+        
+                <form id="otpForm">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="---@---.com" value="{{ session.get('email', '') }}" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+63 --- --- ----" required>
+                    </div>
+
+                    <button class="btn" id="sendOtpBtn" type="submit">Send OTP</button>
+                </form>
+        
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                            {% for category, message in messages %}
+                                <script>alert("{{ message }}");</script>
+                            {% endfor %}
+                    {% endif %}
+                {% endwith %}           
+        
+                <div id="otpFields" class="otp-fields">
+                    <form id="verifyOtpForm">
+                        <div class="form-group">
+                            <label for="email-otp">Email OTP</label>
+                            <input type="text" id="email-otp" name="email_otp" placeholder="Enter OTP" required>
+                        </div>
+
+                <div class="form-group">
+                    <label for="phone-otp">Phone OTP</label>
+                    <input type="text" id="phone-otp" name="phone_otp" placeholder="Enter OTP">
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn" id="verifyOtpBtn">Verify</button>
+            
+                    </form>
+                    
+                    <form id="sigUploadForm" method="POST" action="/sig_upload">
+                        <button type="submit" class="btn" id="nextBtn" style="display:none;">Next →</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+
+<script>
+    const steps = document.querySelectorAll(".steps li");
+    const formSteps = document.querySelectorAll(".form-step");
+    const nextBtns = document.querySelectorAll(".next");
+    const prevBtns = document.querySelectorAll(".prev");
+    const progress = document.querySelector(".progress");
+    const intro = document.getElementById("intro");
+    const startBtn = document.getElementById("startBtn");
+    let currentStep = 0;
+
+    // Reload Button
+    document.getElementById("reloadBtn").addEventListener("click", () => {
+        if (confirm("Are you sure you want to start over?")) {
+        window.location.href = "/restart";
+        }
+    });
+
+
+    //Sending OTP and Showing OTP Fields
+    document.getElementById("otpForm").addEventListener("submit", function(e) {
+        e.preventDefault(); // stop reload
+
+        const formData = new FormData(this);
+
+        fetch("/send_email_otp", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message); // show flash
+            document.getElementById("otpFields").classList.add("show"); // reveal OTP fields
+        })
+        .catch(err => console.error("Error:", err));
+    });
+
+
+    // OTP Verification
+    document.getElementById("verifyOtpForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch("/verify_email_otp", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+
+            if (data.success) {
+            // show Next button only if verification succeeded
+            document.getElementById("nextBtn").style.display = "inline-block";
+            }
+        })
+        .catch(err => console.error("Error:", err));
+    });
+
+
+
+    function updateStep(n) {
+      formSteps.forEach((step, i) => {
+        step.classList.toggle("active", i === n);
+        if (steps[i]) steps[i].classList.toggle("active", i <= n);
+      });
+      const percent = (n / (formSteps.length - 1)) * 100;
+      if (progress) progress.style.width = percent + "%";
+    }
+
+    startBtn.addEventListener("click", () => {
+      intro.style.display = "none";
+      formSteps[0].classList.add("active");
+      updateStep(currentStep);
+    });
+
+    // OTP Verifier
+    document.getElementById("sendOtpBtn").addEventListener("click", (e) => {
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+
+        if (!email || !phone) {
+            e.preventDefault(); // stop form submit
+            alert("Please enter both email and phone number.");
+            return;
+        }
+
+        // if both fields are filled, allow the form submit (AJAX handler will run)
+        document.getElementById("otpFields").classList.add("show");
+    });
+
+    document.getElementById("verifyOtpBtn").addEventListener("click", () => {
+      if (document.getElementById("emailOtp").value && document.getElementById("phoneOtp").value) {
+        currentStep = 1; updateStep(currentStep);
+      } else { alert("Enter both OTPs."); }
+    });
+
+    // Signature Upload
+    document.getElementById("signatureUpload").addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = evt => {
+          document.getElementById("signaturePreview").src = evt.target.result;
+          document.getElementById("signaturePreview").style.display = "block";
+          document.getElementById("signatureNext").disabled = false;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+
+    // Navigation
+    nextBtns.forEach(btn => btn.addEventListener("click", () => { if (currentStep < formSteps.length - 1) { currentStep++; updateStep(currentStep); } }));
+
+</script>
+
+</html>

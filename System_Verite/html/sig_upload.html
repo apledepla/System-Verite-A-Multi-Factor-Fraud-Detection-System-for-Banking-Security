@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>BPI | Security Verification</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style-wr.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='picture/bpi_logo.png') }}">
+</head>
+
+<body>
+
+  <!-- Whole Container -->
+  <div class="container">
+
+    <!-- Side bar Content (Red BG) -->
+    <div class="progressbar"><div class="progress"></div></div>
+    
+    <form method="POST" action="/restart">
+      <button id="reloadBtn" title="Start Over" style="position: absolute; top: 15px; right: 20px; background: none; border: none; cursor: pointer; font-size: 28px; transition: color 0.3s ease;">
+        ↻
+      </button>
+    </form>
+  
+    <div class="sidebar">
+      <img src="{{ url_for('static', filename='picture/bpi_logo_2.png') }}" alt="BPI Logo">
+      <h2>Security Measures</h2>
+      <ul class="steps">
+        <li class="active" data-step="1">OTP Verification</li>
+        <li class="active" data-step="2">Upload Signature</li>
+        <li data-step="3">Face Detection</li>
+        <li data-step="4">Final Verify</li>
+      </ul>
+    </div>
+
+    <!-- Whole Form Content (White BG) -->
+    <div class="form-content">
+  
+      <!-- Signature Upload-->
+      <div class="form-step active">    
+
+        <h3>Upload Signature</h3>    
+        <p>Upload a clear picture of your signature.</p>
+
+        <div class="form-group">
+          <form action="/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required style="margin-bottom: 12px;">
+            <button class="btn"type="submit">Upload</button>
+          </form>
+        </div>
+
+        <!-- ✅ Message from Flask -->
+        {% if result %}
+          <p style="color: {% if '❌' in result %}red{% else %}green{% endif %}; font-weight:bold;">
+            {{ result }}
+          </p>
+        {% endif %}
+        
+        <center>
+        {% if image_url %}
+          <h4>Uploaded Image:</h4>
+          <img src="{{ image_url }}" alt="Uploaded Image" width="300" style="display:block; margin-bottom:15px;">
+        </center>
+
+          <form method="POST" action="/face_cam">
+            <button class="btn" type="submit">Next →</button>
+          </form>
+        {% endif %}
+        
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+
+<script>
+    const steps = document.querySelectorAll(".steps li");
+    const formSteps = document.querySelectorAll(".form-step");
+    const nextBtns = document.querySelectorAll(".next");
+    const progress = document.querySelector(".progress");
+    let currentStep = 2;
+
+    document.getElementById("reloadBtn").addEventListener("click", () => {
+      if (confirm("Are you sure you want to start over?")) {
+        window.location.href = "/restart";
+      }
+    });
+
+    function updateStep(n) {
+      formSteps.forEach((step, i) => {
+        step.classList.toggle("active", i === n);
+        if (steps[i]) steps[i].classList.toggle("active", i <= n);
+      });
+      const percent = (n / (formSteps.length - 1)) * 100;
+      if (progress) progress.style.width = percent + "%";
+    }
+
+    // Signature Upload
+    document.getElementById("signatureUpload").addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = evt => {
+          document.getElementById("signaturePreview").src = evt.target.result;
+          document.getElementById("signaturePreview").style.display = "block";
+          document.getElementById("signatureNext").disabled = false;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Navigation
+    nextBtns.forEach(btn => btn.addEventListener("click", () => { if (currentStep < formSteps.length - 1) { currentStep++; updateStep(currentStep); } }));
+
+</script>
+
+</html>
