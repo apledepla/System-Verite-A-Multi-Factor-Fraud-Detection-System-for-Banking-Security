@@ -32,6 +32,9 @@ Intro…
 ## Installation  
 Through GitHub clone the repository or download the folder while retaining the current folder structure.  
 
+Download the necessary models and follow the folder structure through the given google drive link:
+	https://drive.google.com/drive/folders/1N-8f23Rk4z3k0jRB36Kc5mhQq3wivM5H?usp=sharing
+
 Needed dependencies are Python with the following libraries and respective versions:  
 
 - **Flask**: web framework (`flask`) - 3.1.1  
@@ -43,7 +46,8 @@ Needed dependencies are Python with the following libraries and respective versi
 - **NumPy**: numerical computing (`numpy`) - 2.0.0  
 - **DeepFace**: face recognition & analysis (`deepface`) - 0.0.95  
 
-> **Note:** Download through manual install of the dependencies or utilize the `requirements.txt`.  
+> **Note:** Download through manual install of the dependencies or utilize the `requirements.txt`.
+
 
 ---
 
