@@ -118,7 +118,7 @@ def check_signature(model, path1, path2, threshold=0.5):
 # Default route
 @app.route('/')
 def index():
-    return render_template('general_info.html', image_paths=None)
+    return render_template('general_info.html', image_paths=None, entire_path=None)
 
 
 # -------------------------------
@@ -399,3 +399,4 @@ def restart():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
