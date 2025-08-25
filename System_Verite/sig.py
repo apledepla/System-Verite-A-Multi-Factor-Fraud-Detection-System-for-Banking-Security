@@ -95,7 +95,7 @@ def load_and_preprocess_image(path):
     img = np.expand_dims(img, axis=-1)  
     return img
 
-def check_signature(model, path1, path2, threshold=0.5):
+def check_signature(model, path1, path2, threshold=0.6):
     """Compares two signatures using Siamese model."""
     img1 = load_and_preprocess_image(path1)
     img2 = load_and_preprocess_image(path2)
@@ -399,4 +399,5 @@ def restart():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
