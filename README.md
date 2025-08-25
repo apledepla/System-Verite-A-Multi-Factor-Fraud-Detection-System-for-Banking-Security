@@ -9,7 +9,11 @@
 ---
 
 ## Introduction  
-Intro…  
+
+Identity verification serves as the cornerstone of banking security, ensuring that only legitimate individuals can access financial services and conduct transactions. In the Philippine context, where digital transformation is rapidly reshaping how people manage money, the demand for secure authentication methods has grown exponentially. The widespread use of e-wallets, mobile banking, and digital financial platforms has made transactions faster and more convenient, but it has also exposed financial institutions to heightened risks of fraud and identity theft. Traditional safeguards, such as passwords, PIN codes, and manual signature checks, have proven insufficient against increasingly sophisticated attacks by malicious actors.
+
+Moreover, as society becomes more dependent on digital technology, cybercriminals are exploiting vulnerabilities in both human and system processes. While banks and regulators, such as the Bangko Sentral ng Pilipinas (BSP), have implemented new policies like the Anti-Financial Account Scamming Act (AFASA) and Circular 1140, incidents of fraud continue to rise, showing that existing measures may not be enough to address evolving threats. This situation highlights the urgent need for innovation, particularly the integration of artificial intelligence (AI), machine learning, and biometric verification, to provide banks with proactive and intelligent security tools that go beyond traditional, reactive approaches.
+
 
 ---
 
