@@ -39,6 +39,8 @@ Through GitHub clone the repository or download the folder while retaining the c
 Download the necessary models and follow the folder structure through the given google drive link:
 	https://drive.google.com/drive/folders/1N-8f23Rk4z3k0jRB36Kc5mhQq3wivM5H?usp=sharing
 
+**Python 3.9-3.11** 
+
 Needed dependencies are Python with the following libraries and respective versions:  
 
 - **Flask**: web framework (`flask`) - 3.1.1  
